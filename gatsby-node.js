@@ -35,3 +35,12 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 }
+
+
+/*
+PATH MODULE:
+
+https://nodejs.org/api/path.html#path_path_resolve_paths
+
+
+*/
