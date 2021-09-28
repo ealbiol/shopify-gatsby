@@ -38,7 +38,7 @@ export default function ProductTeample(props) { // Name created here. All query 
                     <p>{props.data.shopifyProduct.description}</p>
                 </div>
                 <div>
-                    <ImageGallery images={props.data.shopifyProduct.images} /> {/* 'images' prop name created by us here. It will be sent and received in the component 'ImageGallery'  */}
+                    <ImageGallery images={props.data.shopifyProduct.images} /> {/* 'images' prop name created by us here. It will be sent and received in the component 'ImageGallery'. Here both the main image and the thumbnails are rendered. */}
                 </div>
             </Grid>
         </Layout>
