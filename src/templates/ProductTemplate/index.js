@@ -13,6 +13,7 @@ query MyProductQuery($shopifyId: String){
         title
         description
         images {
+            id
           localFile {
             childImageSharp {
               fluid(maxWidth: 300) {
@@ -37,7 +38,7 @@ export default function ProductTeample(props) { // Name created here. All query 
                     <p>{props.data.shopifyProduct.description}</p>
                 </div>
                 <div>
-                    <ImageGallery images={props.data.shopifyProduct.images} /> {/* 'images' prop name created by us here.  */}
+                    <ImageGallery images={props.data.shopifyProduct.images} /> {/* 'images' prop name created by us here. It will be sent and received in the component 'ImageGallery'  */}
                 </div>
             </Grid>
         </Layout>
