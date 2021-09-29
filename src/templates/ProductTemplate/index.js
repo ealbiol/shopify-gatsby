@@ -78,16 +78,18 @@ export default function ProductTeample(props) { // Name created here. All query 
           <p>{props.data.shopifyProduct.description}</p>
           {product?.availableForSale && !!selectedVariant &&//optional chaining?: meaning if product (useState const) has content or if its empty. &&: if true
             <>
-              <SelectWrapper>
-                <strong>Variant</strong>
-                <select value={selectedVariant.id} onChange={handleVariantChange} >
-                  {product?.variants.map((variant) => ( //product useState contains the product object with its variants.
-                    <option key={variant.id} value={variant.id}>
-                      {variant.title}
-                    </option>
-                  ))}
-                </select>
-              </SelectWrapper>
+              {product?.variants.length > 1 && //if there are no variants then there is no select by stating that if the products.vatiants.length is superior than 1 then the selectWrapper is renderised. Otherwise not.
+                <SelectWrapper>
+                  <strong>Variant</strong>
+                  <select value={selectedVariant.id} onChange={handleVariantChange} >
+                    {product?.variants.map((variant) => ( //product useState contains the product object with its variants.
+                      <option key={variant.id} value={variant.id}>
+                        {variant.title}
+                      </option>
+                    ))}
+                  </select>
+                </SelectWrapper>
+              }
               {!!selectedVariant && <Price>{selectedVariant?.price}Є</Price> /* !! === if?*/}
             </>}
         </div>
