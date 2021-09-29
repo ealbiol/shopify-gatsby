@@ -41,7 +41,9 @@ export default function ProductTeample(props) { // Name created here. All query 
   const [product, setProduct] = React.useState(null);
   const [selectedVariant, setSelectedVariant] = React.useState(null)
   const { search, origin, pathname } = useLocation(); //Getting it destructured from the import useLocation.
-  console.log("--->useLocation:", "1:", search, "2:", origin, "3:", pathname);
+  console.log("--->Search:", "1:", search);
+  console.log("--->Origin:", "2:", origin);
+  console.log("--->Pathname:", "3:", pathname);
   const variantId = queryString.parse(search).variant //<-- search parsed into an object.
   console.log("--->variantId:", variantId);
 
@@ -90,7 +92,7 @@ export default function ProductTeample(props) { // Name created here. All query 
             </>}
         </div>
         <div>
-          <ImageGallery images={props.data.shopifyProduct.images} /> {/* 'images' prop name created by us here. It will be sent and received in the component 'ImageGallery'. Here both the main image and the thumbnails are rendered. */}
+          <ImageGallery selectedVariantImageId={selectedVariant?.image.id} images={props.data.shopifyProduct.images} /> {/* 'images' prop name created by us here. It will be sent and received in the component 'ImageGallery'. Here both the main image and the thumbnails are rendered. */}
         </div>
       </Grid>
     </Layout>

@@ -3,10 +3,19 @@ import Image from "gatsby-image"
 import { ImageGalleryWrapper } from "./styles"
 import ImageThumbnail from "./ImageThumbnail";
 
-export function ImageGallery({ images }) {
+export function ImageGallery({ images, selectedVariantImageId }) {
     console.log("---> Images:", images);
 
-    const [activeImageThumbnail, setActiveImageThumbnail] = React.useState(images[0])
+    const [activeImageThumbnail, setActiveImageThumbnail] = React.useState(
+        images.find(({ id }) => id === selectedVariantImageId || images[0])
+    );
+
+    React.useEffect(() => {
+        setActiveImageThumbnail(
+            images.find(({ id }) => id === selectedVariantImageId) || images[0]
+        )
+    }, [selectedVariantImageId, images, setActiveImageThumbnail])
+    //Image changes when choosing variant from the select list.
 
     const handleClick = (imageToShow) => { //2.
         setActiveImageThumbnail(imageToShow)
