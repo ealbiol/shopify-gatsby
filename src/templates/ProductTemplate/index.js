@@ -1,4 +1,6 @@
-// PRODUCT TEMPLATE PAGE.
+// *********** P R O D U C T   T E M P L A T E   P A G E ***********
+
+
 //This is the product page template for each product. From here all product pages are created using the following template below. 
 //The creation of page generation comes from gatsby-node.js
 
@@ -90,7 +92,13 @@ export default function ProductTeample(props) { // Name created here. All query 
                   </select>
                 </SelectWrapper>
               }
-              {!!selectedVariant && <Price>{selectedVariant?.price}Є</Price> /* !! === if?*/}
+              {!!selectedVariant && ( /* !! === if?*/
+                <>
+                  <Price>{selectedVariant?.price}Є</Price>
+
+                </>
+
+              )}
             </>}
         </div>
         <div>
@@ -192,5 +200,16 @@ It compares all the id's the object product has with the id of the value.target
 And then the variant that matches this find is saved in the state selectedVariant.
 
 CHANGE: const newVariant added.
+*/
+
+
+/* PRODUCT QUANTITY ADDER EXPLANATION
+
+--> We import the component index.js from ProductQuantityAdder
+--> We make it renderise under the styled component 'price'.
+--> We create the following props:
+    variantId={selectedVariant.id} gives us the product id of the selected variant.
+    available={selectedVariant.id} gives us the availability of the product: Either true or false.
+
 */
 
