@@ -5,7 +5,7 @@
 import React from "react";
 import { graphql } from "gatsby";
 import { Layout, ImageGallery } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
-import { Grid, SelectWrapper } from "./styles"
+import { Grid, SelectWrapper, Price } from "./styles"
 import CartContext from "context/CartContext"
 
 export const query = graphql` 
@@ -28,24 +28,34 @@ query MyProductQuery($shopifyId: String){
 } 
 `
 //The graphql call here is different as when we export a query from a page is called a Page Query.
-//$: Here we specify the name of the variable
+//$: Here we specify the name of the variable.
 
 export default function ProductTeample(props) { // Name created here. All query requested on graphql will be injected as props. There we can find 'data', 'title' inside, etc.
   console.log("---> Props of the product:", props); //Here we receive as props the context created in gatsby-node.js. Therefore the shopifyId of the product.
 
   const { getProductById } = React.useContext(CartContext); //Receiving the function getProductById.
   const [product, setProduct] = React.useState(null);
+  const [selectedVariant, setSelectedVariant] = React.useState(null)
 
 
   React.useEffect(() => {
     getProductById(props.data.shopifyProduct.shopifyId).then(result => {
       //Here we are getting a specific product object by within the () indicating the id of the one we want.
       //The id is gotten from the graphQL above as we asked for the shopifyId within the function.
-      console.log("Product object:", result);
+      console.log("--->Product object:", result);
       setProduct(result) //Here we are saving the product object into the useState 'Product'
+      setSelectedVariant(result.variants[0]) //Setting the first variant as default
     })
   }, [getProductById, setProduct])
 
+
+  const handleVariantChange = (e) => { // (e) to access the event object.
+    setSelectedVariant(product?.variants.find(variant => variant.id === e.target.value))
+    //by 'product' we are accessing the product state.
+    //Here we save as SelectedVariant the product which its variant.id is the same as the value in the select (e.target.value)
+  }
+  console.log("--->Selected Variant:", selectedVariant);
+  console.log("--->Selected Variant Name:", selectedVariant?.title);
   return (
     <Layout>
       <Grid>
@@ -56,14 +66,15 @@ export default function ProductTeample(props) { // Name created here. All query 
             <>
               <SelectWrapper>
                 <strong>Variant</strong>
-                <select>
-                  {product?.variants.map((variant, id) => ( //product useState contains the product object with its variants.
-                    <option key={id} >
+                <select onChange={handleVariantChange} >
+                  {product?.variants.map((variant) => ( //product useState contains the product object with its variants.
+                    <option key={variant.id} value={variant.id}>
                       {variant.title}
                     </option>
                   ))}
                 </select>
               </SelectWrapper>
+              {!!selectedVariant && <Price>{selectedVariant?.price}Є</Price> /* !! === if?*/}
             </>}
         </div>
         <div>
@@ -78,7 +89,7 @@ export default function ProductTeample(props) { // Name created here. All query 
 
 
 /*
-EXPLANATION OF ' shopifyProduct(shopifyId: {eq: shopifyId}) ':
+---------------> EXPLANATION OF ' shopifyProduct(shopifyId: {eq: shopifyId}) ':
 
 export const query = graphql`
 query MyProductQuery($shopifyId: String){
@@ -94,7 +105,7 @@ query MyProductQuery($shopifyId: String){
 */
 
 
-/* EXPLANATION OF getProductById:
+/* ---------------> EXPLANATION OF getProductById:
 
 PRODUCT WITH ALL VARIANTS DATA INSIDE.
 
@@ -123,3 +134,45 @@ product useState contains the product object.
 
 Within this product we can find its variants, its availability, etc
 */
+
+
+/*
+---------------> EXPLANATION OF selectedVariant
+
+We want that when we choose a variant from the drop-down menu we get the data
+of that variant (its title, price, etc).
+
+--> We set a useState called selectedVariant.
+
+--> Within the getProductById we change the value from the state selectedVariant
+from null to the first variant[0]. Its inside the getProductById function since
+in that function we get all the product data.
+
+--> On the <select> tag we add an onChange event that will trigger a function
+called 'handleVariantChange'.
+
+--> Within that function we need to get the data of the selected variant
+and save it on the state 'selectedVaraint'.
+
+We use the function of the state setSelectedVariant and there we have to get
+the selected variant.
+
+To get it we use the state 'product' (which contains the product given an id
+from getProductById) and we access its variants.
+
+KEY: There we apply the 'find' method and we look for a variant.id (from the product object)
+that is equal to the e.target.value . Remember that in the .map we added a prop called
+'value' and we added that its value is equal to the id of the variant.
+
+Therefore when selecting a variant in the dropdown menu <select> the find method will
+find and save in the state SelectedVariant a product.variant.id (from the several it has)
+that is equal to the target.value remembering that the value of the prop 'value' is
+the variant.id since this is how we specified in the .map:
+
+ {product?.variants.map((variant) => (
+                    <option key={variant.id} value={variant.id}>
+
+It compares all the id's the object product has with the id of the value.target
+And then the variant that matches this find is saved in the state selectedVariant.
+*/
+
