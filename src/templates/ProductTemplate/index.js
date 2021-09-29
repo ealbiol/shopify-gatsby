@@ -7,6 +7,10 @@ import { graphql } from "gatsby";
 import { Layout, ImageGallery } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
 import { Grid, SelectWrapper, Price } from "./styles"
 import CartContext from "context/CartContext"
+import { navigate, useLocation } from "@reach/router" //URL variant related. Package added by professor.
+//navigate: allows us to nagivate to a partiular URL by JS.
+//useLocation: Returns us a bunch of different things specific to the current url we are on. Ex: params
+import queryString from "query-string" //URL variant related. Package added by professor.
 
 export const query = graphql` 
 query MyProductQuery($shopifyId: String){
@@ -36,7 +40,10 @@ export default function ProductTeample(props) { // Name created here. All query 
   const { getProductById } = React.useContext(CartContext); //Receiving the function getProductById.
   const [product, setProduct] = React.useState(null);
   const [selectedVariant, setSelectedVariant] = React.useState(null)
-
+  const { search, origin, pathname } = useLocation(); //Getting it destructured from the import useLocation.
+  console.log("--->useLocation:", "1:", search, "2:", origin, "3:", pathname);
+  const variantId = queryString.parse(search).variant //<-- search parsed into an object.
+  console.log("--->variantId:", variantId);
 
   React.useEffect(() => {
     getProductById(props.data.shopifyProduct.shopifyId).then(result => {
@@ -44,15 +51,20 @@ export default function ProductTeample(props) { // Name created here. All query 
       //The id is gotten from the graphQL above as we asked for the shopifyId within the function.
       console.log("--->Product object:", result);
       setProduct(result) //Here we are saving the product object into the useState 'Product'
-      setSelectedVariant(result.variants[0]) //Setting the first variant as default
+      setSelectedVariant(result.variants.find(({ id }) => id === variantId) || result.variants[0]) //Setting the first variant as default
     })
-  }, [getProductById, setProduct])
+  }, [getProductById, setProduct, props.data.shopifyProduct.shopifyId, variantId])
 
 
   const handleVariantChange = (e) => { // (e) to access the event object.
-    setSelectedVariant(product?.variants.find(variant => variant.id === e.target.value))
+    const newVariant = product?.variants.find(variant => variant.id === e.target.value);
+    setSelectedVariant(newVariant)
     //by 'product' we are accessing the product state.
     //Here we save as SelectedVariant the product which its variant.id is the same as the value in the select (e.target.value)
+    //URL for variants video 23 and 24.
+    navigate(`${origin}${pathname}?variant=${encodeURIComponent(newVariant.id)}`, {
+      replace: true
+    })
   }
   console.log("--->Selected Variant:", selectedVariant);
   console.log("--->Selected Variant Name:", selectedVariant?.title);
@@ -62,11 +74,11 @@ export default function ProductTeample(props) { // Name created here. All query 
         <div>
           <h1>{props.data.shopifyProduct.title}</h1>
           <p>{props.data.shopifyProduct.description}</p>
-          {product?.availableForSale && //optional chaining?: meaning if product (useState const) has content or if its empty. &&: if true
+          {product?.availableForSale && !!selectedVariant &&//optional chaining?: meaning if product (useState const) has content or if its empty. &&: if true
             <>
               <SelectWrapper>
                 <strong>Variant</strong>
-                <select onChange={handleVariantChange} >
+                <select value={selectedVariant.id} onChange={handleVariantChange} >
                   {product?.variants.map((variant) => ( //product useState contains the product object with its variants.
                     <option key={variant.id} value={variant.id}>
                       {variant.title}
@@ -174,5 +186,7 @@ the variant.id since this is how we specified in the .map:
 
 It compares all the id's the object product has with the id of the value.target
 And then the variant that matches this find is saved in the state selectedVariant.
+
+CHANGE: const newVariant added.
 */
 
