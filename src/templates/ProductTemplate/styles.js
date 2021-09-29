@@ -22,3 +22,11 @@ grid-gap: 20px;
     }
 }
 `
+
+export const SelectWrapper = styled.div`
+margin-top: 40px;
+>strong{ //Targetting any strong tag that is inside the SelectWrapper component
+    display: block;
+    margin-bottom: 8px;
+}
+`
