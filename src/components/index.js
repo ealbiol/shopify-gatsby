@@ -11,3 +11,5 @@ of ther files under inside the following folders:
 export * from './SEO';
 export * from './Layout';
 export * from "./ImageGallery"
+export * from "./ProductQuantityAdder"
+

@@ -6,7 +6,7 @@
 
 import React from "react";
 import { graphql } from "gatsby";
-import { Layout, ImageGallery } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
+import { Layout, ImageGallery, ProductQuantityAdder } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
 import { Grid, SelectWrapper, Price } from "./styles"
 import CartContext from "context/CartContext"
 import { navigate, useLocation } from "@reach/router" //URL variant related. Package added by professor.
@@ -95,7 +95,9 @@ export default function ProductTeample(props) { // Name created here. All query 
               {!!selectedVariant && ( /* !! === if?*/
                 <>
                   <Price>{selectedVariant?.price}Є</Price>
-
+                  <ProductQuantityAdder
+                    available={selectedVariant.available}
+                    variantId={selectedVariant.id} />
                 </>
 
               )}
