@@ -94,7 +94,7 @@ export default function ProductTeample(props) { // Name created here. All query 
               }
               {!!selectedVariant && ( /* !! === if?*/
                 <>
-                  <Price>{selectedVariant?.price}Є</Price>
+                  <Price>{selectedVariant?.price}€</Price>
                   <ProductQuantityAdder
                     available={selectedVariant.available}
                     variantId={selectedVariant.id} />
