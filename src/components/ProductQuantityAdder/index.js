@@ -2,11 +2,13 @@ import React from "react";
 import { ProductQuantityAdderWrapper } from "./styles"
 import { Button } from "../Button"
 import { Input } from "../Input"
-
+import CartContext from "context/CartContext" //9.
 
 export function ProductQuantityAdder({ available, variantId }) {
 
     const [quantity, setQuantity] = React.useState(1); //1.
+
+    const { updateLineItem } = React.useContext(CartContext) //9.
 
     const handleQuantityChange = (e) => { //3.
         setQuantity(e.currentTarget.value)
@@ -16,6 +18,7 @@ export function ProductQuantityAdder({ available, variantId }) {
 
     const handleSubmit = (e) => { //8.
         e.preventDefault();
+        updateLineItem({ variantId, quantity: parseInt(quantity, 10) });
     }
 
     return (
@@ -83,4 +86,14 @@ We do the same for the button.
 
 8. We build the function 'handleSubmit' passing (e) for the event.
 We add inside preventDefault to avoid refreshing the page.
+
+CART FUNCTIONALITY (video 30):
+
+In the handleSubmit function is where we want to add our product
+to our cart.
+
+First we need to consume our cart context in our component.
+
+9. We get data from the CartContext: updateLineItem.
+We also need to import the CartContext.
 */
