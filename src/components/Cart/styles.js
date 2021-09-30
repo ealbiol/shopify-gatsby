@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { StyledLink } from "../StyledLink";
 
 export const CartWrapper = styled(StyledLink).attrs(() => ({
-    to: "/cart"
+    to: "/cart" //Here we establish that it will sent us to a page called 'cart'.
 }))`
 margin-left: auto;
 display: flex;
@@ -19,6 +19,7 @@ text-decoration: none;
 `
 
 /*
+LINK TO THE CART PAGE:
 StyledLink explanation on video section 32.
 Link provided from professor:
 https://styled-components.com/docs/advanced#styling-normal-react-components
