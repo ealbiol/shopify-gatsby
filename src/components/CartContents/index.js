@@ -1,6 +1,6 @@
 import React from 'react';
 import CartContext from "context/CartContext"
-import { CartItem } from "./styles"
+import { CartItem, CartHeader, CartFooter } from "./styles"
 
 export function CartContents() {
 
@@ -11,9 +11,13 @@ export function CartContents() {
 
     return (
         <section>
-            <h1>
-                Your cart
-            </h1>
+            <h1>Your cart</h1>
+            <CartHeader>
+                <div>Product</div>
+                <div>Unit Price</div>
+                <div>Quantity</div>
+                <div>Amount</div>
+            </CartHeader>
             {checkout?.lineItems?.map(item => (
                 <CartItem>
                     <div>
@@ -21,7 +25,7 @@ export function CartContents() {
                             {item.title}
                         </div>
                         <div>
-                            {item.variant.title}
+                            {item.variant.title === "Default Title" ? "" : item.variant.title} {/* Ternary operator to remove 'Default Title' when product doesn't have variants. */}
                         </div>
                     </div>
                     <div>
@@ -30,9 +34,17 @@ export function CartContents() {
                     <div>
                         {item.quantity}
                     </div>
-                    <div>{(item.quantity * item.variant.price).toFixed(2)}</div> {/* quantity * price */}
+                    <div>{(item.quantity * item.variant.price).toFixed(2)}€</div> {/* quantity * price */}
                 </CartItem>
             ))}
+            <CartFooter>
+                <div>
+                    <strong>Total:</strong>
+                </div>
+                <div>
+                    <span>{checkout?.totalPrice}€</span>
+                </div>
+            </CartFooter>
         </section>
     )
 }
