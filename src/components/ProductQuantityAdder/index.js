@@ -1,5 +1,8 @@
 import React from "react";
 import { ProductQuantityAdderWrapper } from "./styles"
+import { Button } from "../Button"
+import { Input } from "../Input"
+
 
 export function ProductQuantityAdder({ available, variantId }) {
     return (
@@ -8,9 +11,12 @@ export function ProductQuantityAdder({ available, variantId }) {
             <ProductQuantityAdderWrapper>
                 <strong>Quantity</strong>
                 <form>
-
+                    <Input />
+                    <Button fullWidth > {/* Sending style prop to styles.js */}
+                        Add to cart
+                    </Button>
                 </form>
-                {variantId}
+                {/* {variantId} */}
             </ProductQuantityAdderWrapper>
         </div>
     )
