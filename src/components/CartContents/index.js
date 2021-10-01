@@ -2,6 +2,8 @@ import React from 'react';
 import CartContext from "context/CartContext"
 import { CartItem, CartHeader, CartFooter } from "./styles"
 import { QuantityAdjuster } from '../QuantityAdjuster';
+import { RemoveLineItem } from '../RemoveLineItem';
+
 
 export function CartContents() {
 
@@ -40,6 +42,9 @@ export function CartContents() {
                         <QuantityAdjuster item={item} on whenAdjusting={handleAdjustQuantity} /> {/* Sending props to child index.js from QuantityAdjuster */}
                     </div>
                     <div>{(item.quantity * item.variant.price).toFixed(2)}€</div> {/* quantity * price */}
+                    <div>
+                        <RemoveLineItem lineItemId={item.id} />
+                    </div>
                 </CartItem>
             ))}
             <CartFooter>
