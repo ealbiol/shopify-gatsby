@@ -1,13 +1,18 @@
 import React from 'react';
 import CartContext from "context/CartContext"
 import { CartItem, CartHeader, CartFooter } from "./styles"
+import { QuantityAdjuster } from '../QuantityAdjuster';
 
 export function CartContents() {
 
-    const { checkout } = React.useContext(CartContext)
+    const { checkout, updateLineItem } = React.useContext(CartContext)
     //Destructured Cartontext to consume its content.
 
     console.log("----->CHECK OUT CART:", checkout);
+
+    const handleAdjustQuantity = ({ quantity, variantId }) => { //Destructured quantity and variantId taken from checkout object from context.
+        updateLineItem({ quantity, variantId })
+    }
 
     return (
         <section>
@@ -32,7 +37,7 @@ export function CartContents() {
                         {item.variant.price}€
                     </div>
                     <div>
-                        {item.quantity}
+                        <QuantityAdjuster item={item} on whenAdjusting={handleAdjustQuantity} /> {/* Sending props to child index.js from QuantityAdjuster */}
                     </div>
                     <div>{(item.quantity * item.variant.price).toFixed(2)}€</div> {/* quantity * price */}
                 </CartItem>

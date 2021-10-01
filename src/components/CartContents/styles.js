@@ -28,7 +28,7 @@ export const CartItem = styled.div`
 border-bottom: 1px solid black;
 display: grid;
 grid-template-columns: 2fr 1fr 2fr 1fr 40px;
-//1. Produt Name, 2. Unit Price, 3. Quantity, 4. Total, 5. Delete Button
+//1. Product Name, 2. Unit Price, 3. Quantity, 4. Total, 5. Delete Button
 >div{
     padding: 8px;
 
