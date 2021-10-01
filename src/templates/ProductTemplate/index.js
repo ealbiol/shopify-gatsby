@@ -17,19 +17,7 @@ import queryString from "query-string" //URL variant related. Package added by p
 export const query = graphql` 
 query MyProductQuery($shopifyId: String){
     shopifyProduct(shopifyId: {eq: $shopifyId}) {
-        shopifyId
-        title
-        description
-        images {
-            id
-          localFile {
-            childImageSharp {
-              fluid(maxWidth: 300) {
-                ...GatsbyImageSharpFluid_withWebp
-              }
-            }
-          }
-        }
+        ...ShopifyProductFields
       } 
 } 
 `
