@@ -6,7 +6,7 @@
 
 import React from "react";
 import { graphql } from "gatsby";
-import { Layout, ImageGallery, ProductQuantityAdder } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
+import { Layout, ImageGallery, ProductQuantityAdder, Button } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
 import { Grid, SelectWrapper, Price } from "./styles"
 import CartContext from "context/CartContext"
 import { navigate, useLocation } from "@reach/router" //URL variant related. Package added by professor.
@@ -31,6 +31,7 @@ export default function ProductTeample(props) { // Name created here. All query 
   const [product, setProduct] = React.useState(null);
   const [selectedVariant, setSelectedVariant] = React.useState(null)
   const { search, origin, pathname } = useLocation(); //Getting it destructured from the import useLocation.
+
   console.log("--->Search:", "1:", search);
   console.log("--->Origin:", "2:", origin);
   console.log("--->Pathname:", "3:", pathname);
@@ -62,6 +63,9 @@ export default function ProductTeample(props) { // Name created here. All query 
   console.log("--->Selected Variant Name:", selectedVariant?.title);
   return (
     <Layout>
+      <Button onClick={() => navigate(-1)} > {/* It sends us back to the page we were before. */}
+        Back to products
+      </Button>
       <Grid>
         <div>
           <h1>{props.data.shopifyProduct.title}</h1>

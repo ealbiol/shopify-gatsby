@@ -12,6 +12,9 @@ export function ProductsGrid({ products }) { //Receiving products (of FeaturedCo
                         key={product.shopifyId}
                         title={product.title}
                         imageFluid={product.images[0].localFile.childImageSharp.fluid} // [0] since we want to get the first image of the array of images that each product has.
+                        description={product.description}
+                        minPrice={product.priceRange.minVariantPrice.amount}
+                        handle={product.handle}
                     />
                 ))
             }

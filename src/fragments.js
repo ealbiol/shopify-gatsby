@@ -5,6 +5,12 @@ fragment ShopifyProductFields on ShopifyProduct{
     shopifyId
         title
         description
+        handle
+        priceRange {
+          minVariantPrice {
+            amount
+          }
+        }
         images {
             id
           localFile {
