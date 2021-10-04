@@ -23,6 +23,10 @@ export * from "./HomePageCollectionsGrid"
 export * from "./FeaturedProducts"
 export * from "./ProductsGrid"
 export * from "./ProductTile"
+export * from "./Filters"
+export * from "./CategoryFilterItem"
+export * from "./Checkbox"
+
 
 
 
