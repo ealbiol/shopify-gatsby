@@ -8,8 +8,12 @@ const IndexPage = () => {
   console.log("---> Collections:", collections);
   return (
     <Layout>
-      <HomePageCollectionsdGrid collections={collections.filter(collection => collection.title !== "Featured Hats")} />
-      <FeaturedProducts />
+      <HomePageCollectionsdGrid collections={collections.filter(collection => collection.title !== "Featured Hats")} />  {/* We establish that we want all collections whose collection.title is NOT equal to "Featured Hats". Therefore we get all of them but the Featured Hats one. */}
+
+
+      {!!collections.find(collection => collection.title === "Featured Hats") && //Conditional: Render if within collections there is a collection.title equal to Featured Hats.
+        <FeaturedProducts />
+      }
     </Layout>
   )
 }
