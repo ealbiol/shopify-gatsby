@@ -2,14 +2,14 @@ import React from 'react';
 import { CollectionTileWrapper, CollectionTileContent, Title, Description } from "./styles"
 import BackgroundImage from 'gatsby-background-image';
 
-export function CollectionTile({ title, description, backgroundImage }) { //Receiving props from parent component 'HomePageCollectionsGrid'.
+export function CollectionTile({ title, description, backgroundImage, sale }) { //Receiving props from parent component 'HomePageCollectionsGrid'.
     return (
         <CollectionTileWrapper>
             <BackgroundImage fluid={backgroundImage} />
             <CollectionTileContent>
                 <div>
-                    <Title>{title}</Title>
-                    <Description>{description}</Description>
+                    <Title sale={sale} >{title}</Title>
+                    <Description sale={sale} >{description}</Description>
                 </div>
             </CollectionTileContent>
         </CollectionTileWrapper>
@@ -28,3 +28,4 @@ prop that we received from the parent component 'HomePageCollectionsGrid'.
 Remember that in that component 'CollectionTile' is within a .map so therefore we get all titles,
 descriptions, backgroundImages, etc.
 */
+

@@ -38,10 +38,13 @@ font-size: 40px;
 font-weight: bold;
 border-radius: 10px;
 text-shadow: 2px 2px 2px rgba(0,0,0,0.75);
+background: ${props => props.sale ? "red" : "none"};
 `
 
 export const Description = styled.div`
 font-size: 20px;
 margin: 10px;
 border-radius: 10px;
+background: ${props => props.sale ? "red" : "none"};
+padding: 10px;
 `
