@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <LayoutWrapper>
+      <LayoutWrapper> {/* styled component */}
         <main>{children}</main>
       </LayoutWrapper>
     </>
