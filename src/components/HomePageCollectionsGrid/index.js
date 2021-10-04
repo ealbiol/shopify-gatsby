@@ -20,7 +20,7 @@ export function HomePageCollectionsdGrid({ collections }) { //Receiving collecti
                 />
             }
 
-            <RemainingCollections> {/*Styled Component created to make a grid. Its not the const from above.*/}
+            <RemainingCollections> {/*Styled Component created. Its not the const from above.*/}
                 {/* REMAINING COLLECTIONS: Applying a .map loop */}
                 {
                     remainingCollections.map(collection => {

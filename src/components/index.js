@@ -20,6 +20,9 @@ export * from "./CartContents"
 export * from "./QuantityAdjuster"
 export * from "./RemoveLineItem"
 export * from "./HomePageCollectionsGrid"
+export * from "./FeaturedProducts"
+export * from "./ProductsGrid"
+
 
 
 
