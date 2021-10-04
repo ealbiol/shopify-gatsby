@@ -22,6 +22,8 @@ export * from "./RemoveLineItem"
 export * from "./HomePageCollectionsGrid"
 export * from "./FeaturedProducts"
 export * from "./ProductsGrid"
+export * from "./ProductTile"
+
 
 
 
