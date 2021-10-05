@@ -6,21 +6,35 @@ import queryString from "query-string" //4.
 
 export function CategoryFilterItem({ title, id }) { //Receiving 'title' from parent component 'Filters'.
 
-    const { search } = useLocation(); //5. Takes the URL after "?"
-    const qs = queryString.parse(search) //6. Grabbing the URL we are in.
-    const collectionId = qs.c; // 7. Saving the result under a const ('colletionId') + .c
+    const { search } = useLocation(); // Takes the URL after "?" E.G: search = c=1,3
+    const qs = queryString.parse(search) // Grabbing the URL an converting it into JS object. E.G: qs = {c:"1,3"}
+    const collectionIds = qs.c?.split(',').filter(c => !!c); // 7. Creating an array with each id. E.G: collectionIds = [1,3]. Split converts string to array with a given sign (,) as separator
+    const checked = collectionIds?.find(cId => cId === id) // checked has content if cId equals id. And ture marks the checbox black
 
-    console.log("---> collectionId:", collectionId);
+    console.log("---> qs:", qs);
+    console.log("---> collectionIds:", collectionIds);
     console.log("---> id:", id);
+
     const whenClicking = () => {
         let navigateTo = "/all-products"
 
-        navigate(`${navigateTo}?c=${encodeURIComponent(id)}`) //3.
+
+        let newIds = [];
+
+        if (checked) {
+            newIds = collectionIds.filter(cId => cId !== id)
+                .map(cId => encodeURIComponent(cId))
+        } else {
+            collectionIds.push(id) // Adds clicked id's to collectionIds.
+            newIds = collectionIds.map(cId => encodeURIComponent(cId))
+        }
+
+        navigate(`${navigateTo}?c=${newIds.join(',')}`) //3. E.G: [1,3] to "1,3". Converts array into string giving a specific separator (,)
     };
 
     return (
         <CategoryFilterItemWrapper onClick={whenClicking} > {/* 1. */}
-            <Checkbox checked={collectionId === id} /> {/* 7. True if 'collectionId' is equal to 'id' */}
+            <Checkbox checked={checked} /> {/* 7. True if 'collectionId' is equal to 'id' */}
             <div>{title}</div>
         </CategoryFilterItemWrapper>
     )
@@ -49,25 +63,6 @@ Use of the onClick: We want that when clicking we navigate to the URL of the col
 This way we have a specific URL for each collection that is the mix of the 'navigateTo' and the shopifyId of the collection.
 
 
-Go to index.js from Checbox to read ---> EXPLANATION CHECKBOX CHECKED AND UNCHECKED
-
-After having read the checkbox index.js:
-
-Now we want that when clicking on a checkbox it becomes black and the arrow appears.
-
-4. We import 'queryString' from 'query-string' and useLocation from '@reach/router'.
-5. We use 'search' from having destructured 'useLocation'. 'search' takes the URL
-that comes after the '?' sign. We save that result under a variable called 'qs'.
-6. We create a variable called 'collectionId' and its value is 'qs'.c  . The '.c' is added to use more than one parameter (several id's e.g.)
-**Remember that the URL code is the shopifyId of a collection**
-
-7. We pass/send the prop 'checked' to the Checkbox component with the following value inside:
-<Checkbox checked={collectionId === id} />
-
-This value means: when collectionId is equal to id then its TRUE. And when its not equal is FALSE.
-
-Then we previously set on the Checkbox component that if the prop 'checked' then the checkbox
-is black and with the arrow.
 
 KEY: This the way to establish/connect the following: When the URL is equal to the id of the collection
 then and only then we mark the checkbox black and with the arrow.
@@ -75,4 +70,33 @@ then and only then we mark the checkbox black and with the arrow.
 FINAL: So when we press for example 'Featured Hats' the URL of 'Featured Hats' (this URL is
     the shopifyId of the collection) the checkbox becomes black with the arrow.
     So we have the collection checked with its url on top.
+*/
+
+/* VIDEO 48
+U P D A T E
+ADDING SEVERAL ID'S TO THE URL:
+
+
+A) const { search } = useLocation(); ---> all content after '?' is saved under 'search'.
+    E.G: search = c=1,3
+
+B) const qs = queryString.parse(search) ---> Grabbing the URL an converting it into JS object.
+    E.G: qs = {c:"1,3"}
+
+C) const collectionIds = qs.c?.split(',').filter(c => !!c); ---> Creating an array with each id.
+    E.G: collectionIds = [1,3].
+    Split converts string to array with a given sign (,) as separator.
+    collectionsIds starts empty (obviously)
+
+D) whenClicked:
+
+    collectionIds.push(id) ---> Adds clicked id's to collectionIds.
+    E.G: collectionIds = [1,3]
+
+    const newIds = collectionIds.map(cId => encodeURIComponent(cId)) ---> We go through map to encodeURI all id's.
+
+    navigate(`${navigateTo}?c=${newIds.join(',')}`) ---> Converts array into string giving a specific separator (,)
+    E.G: [1,3] to "1,3"
+    We navigate through the given url.
+
 */
