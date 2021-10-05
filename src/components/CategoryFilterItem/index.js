@@ -6,27 +6,36 @@ import queryString from "query-string" //4.
 
 export function CategoryFilterItem({ title, id }) { //Receiving 'title' from parent component 'Filters'.
 
-    const { search } = useLocation(); // Takes the URL after "?" E.G: search = c=1,3
-    const qs = queryString.parse(search) // Grabbing the URL an converting it into JS object. E.G: qs = {c:"1,3"}
-    const collectionIds = qs.c?.split(',').filter(c => !!c) || []; // 7. Creating an array with each id. E.G: collectionIds = [1,3]. Split converts string to array with a given sign (,) as separator
-    const checked = collectionIds?.find(cId => cId === id) // checked has content if cId equals id. And ture marks the checbox black
+    const { search } = useLocation(); // A) Takes the URL after "?" E.G: search = ?c=1,3
+    const qs = queryString.parse(search) // B) Grabbing the URL an converting it into JS object. E.G: qs = {c:"1,3"}
+    const collectionIds = qs.c?.split(',').filter(c => !!c) || []; // C) Creating an array with each id. E.G: collectionIds = ["1", "3"]. Split converts string to array with a given sign (,) as separator.
+    const checked = collectionIds.find(cId => cId === id) // D) Since we are in a map it iterates through all id's (shopifyId) and gives back only the id's that are equal to cId.
 
-    console.log("---> qs:", qs);
+    console.log("--- search:", search);
+    // console.log("---> qs:", qs);
     console.log("---> collectionIds:", collectionIds);
-    console.log("---> id:", id);
+    // console.log("---> id:", id);
+    console.log("---> checked:", checked);
 
-    const whenClicking = () => {
+
+    const whenClicking = () => { //D
+
         let navigateTo = "/all-products"
-
 
         let newIds = [];
 
-        if (checked) {
-            newIds = collectionIds.filter(cId => cId !== id)
+        if (checked) { //E) If the box was checked before user clicks. Whe defind whats going to happen when user sets from checked to unchecked, when the user is unchecking a checked box:
+            newIds = collectionIds.filter(cId => cId !== id) //Giving back all ids that are not equal to the given id.
                 .map(cId => encodeURIComponent(cId))
+            console.log('new Ids', newIds)
+            alert('unchecked! ')
         } else {
+
             collectionIds.push(id) // Adds clicked id's to collectionIds.
-            newIds = collectionIds.map(cId => encodeURIComponent(cId))
+            newIds = collectionIds
+                .map(cId => encodeURIComponent(cId))
+            console.log('new Ids (added)', newIds)
+            alert('Checked!')
         }
 
         if (newIds.length) {
@@ -84,26 +93,45 @@ U P D A T E
 ADDING SEVERAL ID'S TO THE URL:
 
 
-A) const { search } = useLocation(); ---> all content after '?' is saved under 'search'.
-    E.G: search = c=1,3
+A) const { search } = useLocation(); --->
+    - all content after '?' is saved under 'search'.
+    * E.G: search = c=1,3
 
-B) const qs = queryString.parse(search) ---> Grabbing the URL an converting it into JS object.
-    E.G: qs = {c:"1,3"}
+B) const qs = queryString.parse(search) --->
+    - Grabbing the URL an converting it into JS object.
+    * E.G: qs = {c:"1,3"}
 
-C) const collectionIds = qs.c?.split(',').filter(c => !!c); ---> Creating an array with each id.
-    E.G: collectionIds = [1,3].
-    Split converts string to array with a given sign (,) as separator.
-    collectionsIds starts empty (obviously)
+C) const collectionIds = qs.c?.split(',').filter(c => !!c); --->
+    - Creating an array with each id.
+    * E.G: collectionIds = [1,3].
+    - Split converts string to array with a given sign (,) as separator.
+    - If the array has still no content: || [] . This means it becomes an empty array if no content.
 
-D) whenClicked:
+D) const checked = collectionIds?.find(cId => cId === id) --->
+   - checked has content if cId equals id. And true marks the checbox black.
+   - Since we are in a map it iterates through all id's (shopifyId) and gives back only the id's that are equal to cId.
 
-    collectionIds.push(id) ---> Adds clicked id's to collectionIds.
-    E.G: collectionIds = [1,3]
 
-    const newIds = collectionIds.map(cId => encodeURIComponent(cId)) ---> We go through map to encodeURI all id's.
+E) whenClicked:
 
-    navigate(`${navigateTo}?c=${newIds.join(',')}`) ---> Converts array into string giving a specific separator (,)
-    E.G: [1,3] to "1,3"
-    We navigate through the given url.
+    collectionIds.push(id) --->
+    - Adds clicked id's to collectionIds.
+    * E.G: collectionIds = [1,3]
+
+    const newIds = collectionIds.map(cId => encodeURIComponent(cId)) --->
+    - We go through map to encodeURI all id's.
+
+    navigate(`${navigateTo}?c=${newIds.join(',')}`) --->
+    - Converts array into string giving a specific separator (,)
+    * E.G: [1,3] to "1,3"
+    - We navigate through the given url.
+
+    if(checked) --->
+    - Here we defind what we want to happen when the box passes from checked to unchecked.
+    - We defind whats going to happen when user sets from checked to unchecked, when the
+      user is unchecking a checked box.
+
+      Then the find gives us back the box
+
 
 */
