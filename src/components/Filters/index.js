@@ -17,6 +17,7 @@ export function Filters() { //Not receiving any props since we are importing the
                     <CategoryFilterItem
                         key={collection.shopifyId}
                         title={collection.title} //Sending 'title'  (to child component 'CategoryFilterItem') that comes from 'collections' that comes from ProductContext.
+                        id={collection.shopifyId}
                     />
                 ))
             }
