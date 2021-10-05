@@ -8,7 +8,7 @@ export function CategoryFilterItem({ title, id }) { //Receiving 'title' from par
 
     const { search } = useLocation(); // Takes the URL after "?" E.G: search = c=1,3
     const qs = queryString.parse(search) // Grabbing the URL an converting it into JS object. E.G: qs = {c:"1,3"}
-    const collectionIds = qs.c?.split(',').filter(c => !!c); // 7. Creating an array with each id. E.G: collectionIds = [1,3]. Split converts string to array with a given sign (,) as separator
+    const collectionIds = qs.c?.split(',').filter(c => !!c) || []; // 7. Creating an array with each id. E.G: collectionIds = [1,3]. Split converts string to array with a given sign (,) as separator
     const checked = collectionIds?.find(cId => cId === id) // checked has content if cId equals id. And ture marks the checbox black
 
     console.log("---> qs:", qs);
@@ -29,7 +29,14 @@ export function CategoryFilterItem({ title, id }) { //Receiving 'title' from par
             newIds = collectionIds.map(cId => encodeURIComponent(cId))
         }
 
-        navigate(`${navigateTo}?c=${newIds.join(',')}`) //3. E.G: [1,3] to "1,3". Converts array into string giving a specific separator (,)
+        if (newIds.length) {
+            navigate(`${navigateTo}?c=${newIds.join(',')}`) //3. E.G: [1,3] to "1,3". Converts array into string giving a specific separator (,)
+        } else {
+            navigate(`${navigateTo}`) //3. E.G: [1,3] to "1,3". Converts array into string giving a specific separator (,)
+
+        }
+
+
     };
 
     return (
