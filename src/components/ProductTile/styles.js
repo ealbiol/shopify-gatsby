@@ -9,7 +9,7 @@ border-top-right-radius: 5px;
 border-top-left-radius: 5px;
 overflow: hidden;
 flex-direction: column;
-min-height: 50vh; //made to correct different Tile heights.
+min-height: 48vh; //made to correct different Tile heights.
 /* min-height: 600px; //Option B */
 
 
