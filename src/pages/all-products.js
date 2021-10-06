@@ -27,6 +27,9 @@ export default function AllProducts() {
     //A)
     const collectionProductMap = {}
 
+
+
+
     //B)
     const { search } = useLocation();
     const qs = queryString.parse(search)
@@ -35,6 +38,9 @@ export default function AllProducts() {
     //B)
     // We fill the const 'selectedCollectionIdsMap' with the collection id's from the URL.
     const selectedCollectionIdsMap = {};
+
+    //C)
+    const searchTerm = qs.s; //We take the 'searchTerm' from the URL.
 
     selectedCollectionIds.forEach(collectionId => {
         selectedCollectionIdsMap[collectionId] = true
@@ -74,7 +80,21 @@ export default function AllProducts() {
     } //It's within this function where we want to return whether the category matches our category or not.
 
 
-    const filteredProducts = products.filter(filterByCategory)
+    const filterBySearchTerm = product => {
+        if (searchTerm) {
+            return product.title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
+            //We convert the title of the product and the searchTerm to lower case.
+            //What this line does: We are gonna return the product if there is a searchTerm and if there is a searchTerm that is part of the product.title
+        }
+        return true
+    };
+
+    const filteredProducts = products
+        .filter(filterByCategory)
+        .filter(filterBySearchTerm)
+
+
+
 
     return (
         <Layout>
@@ -96,7 +116,8 @@ We want to filter out products if they don't match any of the categories that we
 selected to filter.
 
 A) Fill the collectionProductMap with collectionsId and productsId of each collection.
-B) Get the URL or URL's that are checked
+B) Get the URL or URL's that are checked.
+C) We add the searchTerm.
 
 A) Fill the collectionProductMap with collectionsId and productsId of each collection.
 ///////////////////////////////////////////////////////////////////
@@ -199,4 +220,32 @@ if (collectionProductMap[key]?.[product.shopifyId]) {
  E.G:
 if (collectionId1.productId4) {  <--- if productId4 is inside collectionId1 then its equal
     to true.
+*/
+
+
+/* C) We add the searchTerm:
+Filtering by 'searchTerm':
+
+- We add this additional filter  right after the first one:
+
+    const filteredProducts = products.filter(filterByCategory).filter(filterBySearchTerm)
+
+
+- //We take the 'searchTerm' from the URL.
+    const searchTerm = qs.s;
+
+- We create the function 'filterBySearchTerm' with the product taking the product (remember
+    wer are in a filter loop):
+
+      const filterBySearchTerm = (product) => {
+        if (searchTerm) {
+            return product.title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
+        }
+
+    };
+
+We convert the title of the product and the searchTerm to lower case.
+What this line does: We are gonna return the product if there is a searchTerm
+and if there is a searchTerm that is part of the product.title
+
 */
