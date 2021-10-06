@@ -26,6 +26,7 @@ export * from "./ProductTile"
 export * from "./Filters"
 export * from "./CategoryFilterItem"
 export * from "./Checkbox"
+export * from "./Search"
 
 
 
