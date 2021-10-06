@@ -78,7 +78,7 @@ export default function AllProducts() {
 
     return (
         <Layout>
-            <h4>{products.length} products</h4>
+            <h4>{filteredProducts.length} products</h4>
             <Content> {/* styled component created on top of this page component. */}
                 <Filters />
                 <div>
@@ -193,6 +193,10 @@ if (collectionProductMap[key]?.[product.shopifyId]) {
 //IMPORTANT: We are in a filter iterating through each product. Then in the loop For we
  iterate through each collectionId form the url's. Then the 'if' starts iterating per
  product (because of the .filter) and per url collection (because of the For) and checks
- the following: if collectionId1 has inside productId1 then its equal true, and like this
- for all the rest.
+ the following: if collectionId1 has inside productId4 then its equal true, and like this
+ for all the rest. Remember that the .filter method only returns what is true.
+
+ E.G:
+if (collectionId1.productId4) {  <--- if productId4 is inside collectionId1 then its equal
+    to true.
 */
