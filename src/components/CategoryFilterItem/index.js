@@ -6,10 +6,11 @@ import queryString from "query-string" //4.
 
 export function CategoryFilterItem({ title, id }) { //Receiving 'title' from parent component 'Filters'.
 
-    const { search } = useLocation(); // A) Takes the URL after "?" E.G: search = ?c=1,3
-    const qs = queryString.parse(search) // B) Grabbing the URL an converting it into JS object. E.G: qs = {c:"1,3"}
-    const collectionIds = qs.c?.split(',').filter(c => !!c) || []; // C) Creating an array with each id. E.G: collectionIds = ["1", "3"]. Split converts string to array with a given sign (,) as separator.
-    const checked = collectionIds.find(cId => cId === id) // D) Since we are in a map it iterates through all id's (shopifyId) and gives back only the id's that are equal to cId.
+    const { search } = useLocation();                               // A) Takes the URL after "?" E.G: search = ?c=1,3
+    const qs = queryString.parse(search)                            // B) Grabbing the URL an converting it into JS object. E.G: qs = {c:"1,3"}
+    const collectionIds = qs.c?.split(',').filter(c => !!c) || [];  // C) Creating an array with each id. E.G: collectionIds = ["1", "3"]. Split converts string to array with a given sign (,) as separator.
+    const checked = collectionIds.find(cId => cId === id)           // D) Since we are in a map it iterates through all id's (shopifyId) and gives back only the id's that are equal to cId.
+    const searchTerm = qs.s; //Accessing the searchItem in the URL
 
     console.log("--- search:", search);
     // console.log("---> qs:", qs);
@@ -30,7 +31,6 @@ export function CategoryFilterItem({ title, id }) { //Receiving 'title' from par
             console.log('new Ids', newIds)
             // alert('unchecked! ')
         } else {
-
             collectionIds.push(id) // Adds clicked id's to collectionIds.
             newIds = collectionIds
                 .map(cId => encodeURIComponent(cId))
@@ -38,11 +38,15 @@ export function CategoryFilterItem({ title, id }) { //Receiving 'title' from par
             // alert('Checked!')
         }
 
-        if (newIds.length) {
+
+        if (newIds.length && !searchTerm) { //if there are newIds and no searchTerm.
             navigate(`${navigateTo}?c=${newIds.join(',')}`) //3. E.G: [1,3] to "1,3". Converts array into string giving a specific separator (,)
+        } else if (newIds.length && !!searchTerm) { //if there are newIds and searchTerm has a value.
+            navigate(`${navigateTo}?c=${newIds.join(',')}&s=${encodeURIComponent(searchTerm)}`) //We then navigate with collections urls and searchTerm.
+        } else if (!newIds.length && !!searchTerm) { //if there are no newIds but there is a searchTerm.
+            navigate(`${navigateTo}s=${encodeURIComponent(searchTerm)}`)
         } else {
             navigate(`${navigateTo}`) //3. E.G: [1,3] to "1,3". Converts array into string giving a specific separator (,)
-
         }
 
 
