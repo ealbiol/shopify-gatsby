@@ -4,6 +4,8 @@ import React from "react"
 import { Layout, Filters, ProductsGrid } from "components"
 import ProductContext from "../context/ProductContext"
 import styled from "styled-components"
+import queryString from "query-string"
+import { useLocation } from "@reach/router"
 
 //We don't create a styles.js file for this component as in gatsby within pages we can't
 //add anything other than pages. That's the reason we create the styled component here.
@@ -22,13 +24,26 @@ export default function AllProducts() {
     const { products, collections } = React.useContext(ProductContext) //Destructuring products and collections to be able to use them.
     console.log("---> Products:", products);
 
+    //A)
     const collectionProductMap = {}
 
+    //B)
+    const { search } = useLocation();
+    const qs = queryString.parse(search)
+    const selectedCollectionIds = qs.c?.split(",").filter(c => !!c) || []; //Getting collection id's from URL.
 
+    //B)
+    // We fill the const 'selectedCollectionIdsMap' with the collection id's from the URL.
+    const selectedCollectionIdsMap = {};
+
+    selectedCollectionIds.forEach(collectionId => {
+        selectedCollectionIdsMap[collectionId] = true
+    });
+
+    //A)
     if (collections) { //'if' just to check if ciollections have value.
 
-        //1.
-        //For each collection we want to assign an id that will be stored to 'collectionProductMap'.
+        //1. For each collection we want to assign an id that will be stored to 'collectionProductMap'.
         collections.forEach(collection => {
             collectionProductMap[collection.shopifyId] = {}; // {collectionId1, collectionId2, ...} / With '={}' we are saying that the 'collectionId' will have one ore more values inside. In this case the productId 
 
@@ -42,9 +57,22 @@ export default function AllProducts() {
 
     console.log("---> collectionProductMap: ", collectionProductMap);
 
+    //B) Important!!
     const filterByCategory = (product) => {
 
+        if (Object.keys(selectedCollectionIdsMap).length) { //Checking that we have content by checking how many collection id's in the url we have.
+            for (let key in selectedCollectionIdsMap) { //Iterate through all collection id's we got from the url.
+                if (collectionProductMap[key]?.[product.shopifyId]) { //IMPORTANT: go to explanation below.
+                    return true
+                }
+            }
+            return false;
+        }
+
+        return true;
+
     } //It's within this function where we want to return whether the category matches our category or not.
+
 
     const filteredProducts = products.filter(filterByCategory)
 
@@ -54,7 +82,7 @@ export default function AllProducts() {
             <Content> {/* styled component created on top of this page component. */}
                 <Filters />
                 <div>
-                    <ProductsGrid products={products} /> {/* We reuse the ProductsGrid component and we pass/send the products prop to the child component. */}
+                    <ProductsGrid products={filteredProducts} /> {/* We send as value the collections present in the URL. If none we set to send it all (return true) */}
                 </div>
             </Content>
 
@@ -67,13 +95,15 @@ export default function AllProducts() {
 We want to filter out products if they don't match any of the categories that we have
 selected to filter.
 
+A) Fill the collectionProductMap with collectionsId and productsId of each collection.
+B) Get the URL or URL's that are checked
 
-1. The content of 'collectionProductMap':
-
+A) Fill the collectionProductMap with collectionsId and productsId of each collection.
 ///////////////////////////////////////////////////////////////////
 ///-***** C R E A T I N G   D Y N A M I C   O B J E C T S *****-///
 ///////////////////////////////////////////////////////////////////
 
+1. The content of 'collectionProductMap':
 It contains an object with objects inside. The objects inside are the shopifyId's of
 each collection.
 
@@ -134,4 +164,35 @@ E.G:
     'collection3Id': {'product1Id': true, 'product2Id': true, 'product3Id': true},
     'collection4Id': {'product1Id': true, 'product2Id': true, 'product3Id': true}
      }
+
+
+B) Get the URL or URL's that are checked:
+
+In order to know which boxes are checked we need to take them from the URL. Since
+remember that there the collection id's are stored when a checkbox is clicked.
+
+- We import queryString and useLocation.
+- Get 'search' destructured from useLocation
+- Store the search under qs.
+- We store all collection (the qs) id's we get from the url to a const
+  called 'selectedCollectionIds'. It gets stored in an array.
+
+
+- We fill the const 'selectedCollectionIdsMap' with the collection id's from the URL:
+
+const selectedCollectionIdsMap = {};
+
+selectedCollectionIds.forEach(collectionId => {
+    selectedCollectionIdsMap[collectionId] = true
+});
+
+
+Explanation of:
+if (collectionProductMap[key]?.[product.shopifyId]) {
+
+//IMPORTANT: We are in a filter iterating through each product. Then in the loop For we
+ iterate through each collectionId form the url's. Then the 'if' starts iterating per
+ product (because of the .filter) and per url collection (because of the For) and checks
+ the following: if collectionId1 has inside productId1 then its equal true, and like this
+ for all the rest.
 */

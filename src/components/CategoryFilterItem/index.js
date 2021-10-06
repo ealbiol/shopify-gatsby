@@ -28,14 +28,14 @@ export function CategoryFilterItem({ title, id }) { //Receiving 'title' from par
             newIds = collectionIds.filter(cId => cId !== id) //Giving back all ids that are not equal to the given id.
                 .map(cId => encodeURIComponent(cId))
             console.log('new Ids', newIds)
-            alert('unchecked! ')
+            // alert('unchecked! ')
         } else {
 
             collectionIds.push(id) // Adds clicked id's to collectionIds.
             newIds = collectionIds
                 .map(cId => encodeURIComponent(cId))
             console.log('new Ids (added)', newIds)
-            alert('Checked!')
+            // alert('Checked!')
         }
 
         if (newIds.length) {
