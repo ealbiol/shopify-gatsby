@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { StyledLink } from "../StyledLink" //so that we can target the StyledLink directly below.
 
 export const CollectionTileWrapper = styled.div`
 height: 300px;
@@ -26,6 +27,24 @@ background: rgba(0,0,0,0.5);
 text-align: center;
 > div{
     padding: 20px;
+
+    ${StyledLink}{ //Targeting StyledLink component inside the div.
+        padding: 10px 10px;
+        background: white;
+        border: 1px solid black;
+        font-weight: bold;
+        font-size: 16px;
+        text-transform: uppercase;
+        display: inline-block;
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover{
+        color: white;
+        background: black;
+        }
+    }
 }
 `
 

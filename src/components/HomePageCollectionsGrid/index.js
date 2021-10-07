@@ -1,6 +1,7 @@
 import React from 'react';
 import { CollectionTile } from '../CollectionTile';
 import { RemainingCollections } from "./styles"
+import { StyledLink } from "../StyledLink" //Importing styled Link to be able to add links.
 
 export function HomePageCollectionsdGrid({ collections }) { //Receiving collections from parent 'index.js' from folder 'Pages'. 
     //We split the data of collections so that in 'saleCollection' we only get the SALE collection
@@ -14,6 +15,7 @@ export function HomePageCollectionsdGrid({ collections }) { //Receiving collecti
             {!!saleCollection &&
                 <CollectionTile
                     sale // "sale" prop === true.
+                    destination={`/all-products?c=${encodeURIComponent(saleCollection.shopifyId)}`} //prop link to collection
                     title={saleCollection.title} //We render the saleCollection. No map needed as it is only one collection.
                     description={saleCollection.description}
                     backgroundImage={saleCollection.image.localFile.childImageSharp.fluid}
@@ -26,6 +28,7 @@ export function HomePageCollectionsdGrid({ collections }) { //Receiving collecti
                     remainingCollections.map(collection => {
                         return (
                             <CollectionTile
+                                destination={`/all-products?c=${encodeURIComponent(collection.shopifyId)}`} //prop link to collection
                                 title={collection.title} //1.
                                 description={collection.description}
                                 backgroundImage={collection.image.localFile.childImageSharp.fluid}

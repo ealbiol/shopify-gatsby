@@ -1,8 +1,9 @@
 import React from 'react';
 import { CollectionTileWrapper, CollectionTileContent, Title, Description } from "./styles"
 import BackgroundImage from 'gatsby-background-image';
+import { StyledLink } from "../StyledLink"
 
-export function CollectionTile({ title, description, backgroundImage, sale }) { //Receiving props from parent component 'HomePageCollectionsGrid'.
+export function CollectionTile({ title, description, backgroundImage, sale, destination }) { //Receiving props from parent component 'HomePageCollectionsGrid'.
     return (
         <CollectionTileWrapper>
             <BackgroundImage fluid={backgroundImage} />
@@ -10,6 +11,7 @@ export function CollectionTile({ title, description, backgroundImage, sale }) { 
                 <div>
                     <Title sale={sale} >{title}</Title>
                     <Description sale={sale} >{description}</Description>
+                    <StyledLink to={destination} >Shop now</StyledLink> {/* 'to=' if from StyledLink. The collection is checked in the checkbox as the collectionId is on the url and logic built before establishes that collectionIds in the url are marked. */}
                 </div>
             </CollectionTileContent>
         </CollectionTileWrapper>
