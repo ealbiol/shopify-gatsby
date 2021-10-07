@@ -8,7 +8,6 @@ const client = new faunadb.Client({
 })
 
 exports.handler = function (event, context, callback) {
-    alert("Hola")
     const isValid = verifyWebhookIntegrity(process.env.SHOPIFY_WEBHOOK_KEY,
         event.headers["x-shopify-hmac-sha256"], event.body);
 
