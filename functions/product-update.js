@@ -50,7 +50,7 @@ exports.handler = function (event, context, callback) {
     } else {
         callback(null, {
             statusCode: 403,
-            body: "Error"
+            body: "Error."
         });
     }
 
