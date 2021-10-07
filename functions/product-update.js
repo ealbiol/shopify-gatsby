@@ -8,6 +8,7 @@ const client = new faunadb.Client({
 })
 
 exports.handler = function (event, context, callback) {
+    alert("Hola")
     const isValid = verifyWebhookIntegrity(process.env.SHOPIFY_WEBHOOK_KEY,
         event.headers["x-shopify-hmac-sha256"], event.body);
 
@@ -43,7 +44,7 @@ exports.handler = function (event, context, callback) {
                 // cal rebuild
                 axios.post(process.env.NETLIFY_BUILD_URL)
             }).catch((e) => {
-                console.log("erroradding to db:", e);
+                console.log("error adding to db:", e);
             });
         });
 
