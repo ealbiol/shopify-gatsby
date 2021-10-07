@@ -95,4 +95,7 @@ so that all products are rendered.
 
   const { allShopifyCollection, allShopifyProduct } = useStaticQuery(Myquery)
 
+
+  '...GatsbyImageSharpFluid_withWebp': This fragment comes from gatsby. You didn't create it.
+  It gives you the image.
 */

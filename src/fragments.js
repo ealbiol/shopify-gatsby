@@ -35,7 +35,7 @@ Steps:
 1. Create a fragment folder in the src level and an index.js folder inside.
 2. On top of the query add 'fragment'.
 3. After 'fragment' add the name of this specific fragment,
-4. After the name ad 'on' and the model we are querying (the main 'folders' appearing in graphql)
+4. After the name add 'on' and the model we are querying (the main 'folders' appearing in graphql)
 
 Result: fragment ShopifyProductFields on ShopifyProduct{
 
