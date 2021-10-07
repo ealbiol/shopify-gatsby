@@ -85,9 +85,12 @@ export default function AllProducts() {
             return product.title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
             //We convert the title of the product and the searchTerm to lower case.
             //What this line does: We are gonna return the product if there is a searchTerm and if there is a searchTerm that is part of the product.title
+            //It returns all the values that contain searchTerm since with the .filter it iterates through all product.title's.
         }
         return true
     };
+
+    console.log("---> searchTerm", searchTerm);
 
     const filteredProducts = products
         .filter(filterByCategory)
@@ -98,12 +101,56 @@ export default function AllProducts() {
 
     return (
         <Layout>
-            <h4>{filteredProducts.length} products</h4>
+
+            {/* If there is a searchTerm and filteredProducts (remember we returned true if no checknox pressed) we render the searchTerm. E.G: 'Search term 'hat'. */}
+            {!!searchTerm && !!filteredProducts.length && (
+                <h3>
+                    Search term <strong>'{searchTerm}'</strong>
+                </h3>
+            )}
+
+            {/* If there are filteredProducts (remember we returned true if no checknox pressed) return the amount of products.*/}
+            {!!filteredProducts.length &&
+                <h4>{filteredProducts.length} products</h4>
+            }
+
             <Content> {/* styled component created on top of this page component. */}
                 <Filters />
-                <div>
-                    <ProductsGrid products={filteredProducts} /> {/* We send as value the collections present in the URL. If none we set to send it all (return true) */}
-                </div>
+                {!filteredProducts.length && //Message if there are no filtered products because of the searchItem === 0. E.G: ewrtwef
+                    <div>
+                        <h3>
+                            <span>
+                                Oh no! Nothing matches
+                            </span>
+                            &nbsp;
+                            <strong>
+                                '{searchTerm}'
+                            </strong>
+                        </h3>
+                        <div>
+                            To help with your search why not try:
+                            <br />
+                            <br />
+                            <ul>
+                                <li>
+                                    Checking your spelling
+                                </li>
+                                <li>
+                                    Using less words
+                                </li>
+                                <li>
+                                    Try using a different search term
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+                {!!filteredProducts.length && ( //Rendering if there are filtered products. Remember no checkbox marked also returns true and therefore the all the products.
+                    <div>
+                        <ProductsGrid products={filteredProducts} /> {/* We send as value the collections present in the URL. If none we set to send it all (return true) */}
+                    </div>
+                )}
+
             </Content>
 
         </Layout>
@@ -119,7 +166,10 @@ A) Fill the collectionProductMap with collectionsId and productsId of each colle
 B) Get the URL or URL's that are checked.
 C) We add the searchTerm.
 
-A) Fill the collectionProductMap with collectionsId and productsId of each collection.
+
+
+-----------> A) Fill the collectionProductMap with collectionsId and productsId of each collection.
+
 ///////////////////////////////////////////////////////////////////
 ///-***** C R E A T I N G   D Y N A M I C   O B J E C T S *****-///
 ///////////////////////////////////////////////////////////////////
@@ -187,7 +237,7 @@ E.G:
      }
 
 
-B) Get the URL or URL's that are checked:
+-----------> B) Get the URL or URL's that are checked:
 
 In order to know which boxes are checked we need to take them from the URL. Since
 remember that there the collection id's are stored when a checkbox is clicked.
@@ -220,10 +270,11 @@ if (collectionProductMap[key]?.[product.shopifyId]) {
  E.G:
 if (collectionId1.productId4) {  <--- if productId4 is inside collectionId1 then its equal
     to true.
-*/
 
 
-/* C) We add the searchTerm:
+
+
+-----------> C) We add the searchTerm:
 Filtering by 'searchTerm':
 
 - We add this additional filter  right after the first one:
@@ -244,8 +295,10 @@ Filtering by 'searchTerm':
 
     };
 
-We convert the title of the product and the searchTerm to lower case.
-What this line does: We are gonna return the product if there is a searchTerm
+- We convert the title of the product and the searchTerm to lower case.
+- What this line does: We are gonna return the product if there is a searchTerm
 and if there is a searchTerm that is part of the product.title
+- indexOf ends up returning all the values that contain searchTerm since with the .filter
+it iterates through all product.title's.
 
 */
