@@ -8,6 +8,8 @@ const IndexPage = () => {
   console.log("---> Collections:", collections);
   return (
     <Layout>
+      {/* title is the text of the window tag of this page. */}
+      <SEO title="Homepage" description={"The MadHatter store homepage"} />
       <HomePageCollectionsdGrid collections={collections.filter(collection => collection.title !== "Featured Hats")} />  {/* We establish that we want all collections whose collection.title is NOT equal to "Featured Hats". Therefore we get all of them but the Featured Hats one. */}
 
 

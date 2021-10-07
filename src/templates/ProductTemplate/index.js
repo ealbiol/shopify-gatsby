@@ -6,7 +6,7 @@
 
 import React from "react";
 import { graphql } from "gatsby";
-import { Layout, ImageGallery, ProductQuantityAdder, Button } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
+import { Layout, ImageGallery, ProductQuantityAdder, Button, SEO } from "components" //Absolute path thanks to 'onCreateWebpackConfig'on gatsby-node.js and index.js of components folder. Video 14. Layout comes from components folder.
 import { Grid, SelectWrapper, Price } from "./styles"
 import CartContext from "context/CartContext"
 import { navigate, useLocation } from "@reach/router" //URL variant related. Package added by professor.
@@ -59,13 +59,24 @@ export default function ProductTeample(props) { // Name created here. All query 
       replace: true
     })
   }
+
+
   console.log("--->Selected Variant:", selectedVariant);
   console.log("--->Selected Variant Name:", selectedVariant?.title);
+
+
   return (
     <Layout>
+      {/* In SEO the title is the text showing up in the product page. So there we want to have the name of the product. The second part ('MadHatter Store' comes from gatsby-config.js metadata.) */}
+      <SEO
+        description={props.data.shopifyProduct.description}
+        title={props.data.shopifyProduct.title}
+      />
+
       <Button onClick={() => navigate(-1)} > {/* It sends us back to the page we were before. */}
         Back to products
       </Button>
+
       <Grid>
         <div>
           <h1>{props.data.shopifyProduct.title}</h1>

@@ -1,7 +1,7 @@
 // A L L   P R O D U C T S   P A G E
 
 import React from "react"
-import { Layout, Filters, ProductsGrid } from "components"
+import { Layout, Filters, ProductsGrid, SEO } from "components"
 import ProductContext from "../context/ProductContext"
 import styled from "styled-components"
 import queryString from "query-string"
@@ -101,6 +101,7 @@ export default function AllProducts() {
 
     return (
         <Layout>
+            <SEO title="All products" description={"The MadHatter store all products"} />
 
             {/* If there is a searchTerm and filteredProducts (remember we returned true if no checknox pressed) we render the searchTerm. E.G: 'Search term 'hat'. */}
             {!!searchTerm && !!filteredProducts.length && (
