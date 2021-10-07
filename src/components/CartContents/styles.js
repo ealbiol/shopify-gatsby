@@ -44,3 +44,12 @@ grid-template-columns: 2fr 1fr 2fr 1fr 40px;
     }
 }
 `
+
+export const Footer = styled.footer`
+display: grid;
+grid-template-columns: 1fr 1fr;
+
+>div:last-child{
+    text-align: right;
+}
+`

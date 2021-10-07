@@ -1,9 +1,10 @@
 import React from 'react';
 import CartContext from "context/CartContext"
-import { CartItem, CartHeader, CartFooter } from "./styles"
+import { CartItem, CartHeader, CartFooter, Footer } from "./styles"
 import { QuantityAdjuster } from '../QuantityAdjuster';
 import { RemoveLineItem } from '../RemoveLineItem';
-
+import { Button } from "../Button"
+import { navigate } from "@reach/router"
 
 export function CartContents() {
 
@@ -19,13 +20,19 @@ export function CartContents() {
     return (
         <section>
             <h1>Your cart</h1>
-            <CartHeader>
-                <div>Product</div>
-                <div>Unit Price</div>
-                <div>Quantity</div>
-                <div>Amount</div>
-            </CartHeader>
-            {checkout?.lineItems?.map(item => (
+
+            {!!checkout?.lineItems && //if there are lineItems in the checkout then we render the CartHeader.
+
+                <CartHeader>
+                    <div>Product</div>
+                    <div>Unit Price</div>
+                    <div>Quantity</div>
+                    <div>Amount</div>
+                </CartHeader>
+
+            }
+
+            {checkout?.lineItems?.map(item => ( //rendering conditional if checkout object has data on it (lineItems).
                 <CartItem>
                     <div>
                         <div>
@@ -47,14 +54,43 @@ export function CartContents() {
                     </div>
                 </CartItem>
             ))}
-            <CartFooter>
+
+
+            {!!checkout?.lineItems && //rendering conditional if the checkout has lineItems.
+                <CartFooter>
+                    <div>
+                        <strong>Total:</strong>
+                    </div>
+                    <div>
+                        <span>{checkout?.totalPrice}€</span>
+                    </div>
+                </CartFooter>
+            }
+            {!checkout?.lineItems && //rendering conditional if the checkout doesn't have lineItems
+                <h4>Your cart is empty.</h4>
+            }
+
+
+            <Footer>
                 <div>
-                    <strong>Total:</strong>
+                    <Button onClick={() => navigate(-1)}>
+                        Continue shopping
+                    </Button>
                 </div>
+
                 <div>
-                    <span>{checkout?.totalPrice}€</span>
+                    {!!checkout?.webUrl && //conditional if the checkout object has data.
+
+                        <Button onClick={() => {
+                            window.location.href = checkout.webUrl; //checkout comes from the CartContext and its a shopify page for checkout with all our products.
+                        }} >
+                            Checkout
+                        </Button>
+
+                    }
+
                 </div>
-            </CartFooter>
+            </Footer>
         </section>
     )
 }
