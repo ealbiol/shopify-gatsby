@@ -1,5 +1,6 @@
 const faunadb = require("faunadb");
 const verifyWebhookIntegrity = require("shopify-verify-webhook")
+const axios = require("axios")
 
 const q = faunadb.query;
 
@@ -25,7 +26,16 @@ exports.handler = function (event, context, callback) {
 
         client.query(q.Get(q.Match(q.Index("product_by_id"), id))).then(result => {
             if (result.data.product !== bodyString) {
-                //call rebuild
+
+                client.query(q.Update(result.ref, {
+                    data: { product: bodyString },
+                })
+                ).then(() => {
+                    // call rebuild
+                    axios.post(process.env.NETLIFY_BUILD_URL)
+                }).catch(e => {
+                    console.log("error updating product: ", e);
+                })
             }
         }).catch(() => {
             client.query(q.Create(q.Collection("products"), {
@@ -33,6 +43,9 @@ exports.handler = function (event, context, callback) {
             })
             ).then(() => {
                 // call rebuild. CONTINUE HERE: 14:42
+                axios.post(process.env.NETLIFY_BUILD_URL)
+            }).catch((e) => {
+                console.log("error adding to db", e);
             })
         });
 
